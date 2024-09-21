@@ -1,4 +1,4 @@
-// Score: 35390
+// Score: 45090
 
 import java.util.*;
 import java.io.*;
@@ -17,17 +17,25 @@ class Player {
             int x = in.nextInt();
             int y = in.nextInt();
             int humanCount = in.nextInt();
-            Human[] humans = new Human[humanCount];
+            var humans = new Human[humanCount];
             for (int i = 0; i < humanCount; i++) {
                 humans[i] = new Human(in.nextInt(), in.nextInt(), in.nextInt());
             }
             int zombieCount = in.nextInt();
-            Zombie[] zombies = new Zombie[zombieCount];
+            var zombies = new Zombie[zombieCount];
             for (int i = 0; i < zombieCount; i++) {
                 zombies[i] = new Zombie(in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt());
             }
 
-            Human humanInDanger = humanCloserToZombie(humans, zombies);
+            var humanInDanger = humanCloserToZombie(humans, zombies);
+            var humansInDanger = HumansInDanger(humans, zombies);
+            if (humansInDanger.length > 0) {
+                for (Human h : humansInDanger) {
+                    if (distance(h, x, y) < distance(humanInDanger, x, y)) {
+                        humanInDanger = h;
+                    }
+                }
+            }
 
             // Write an action using System.out.println()
             // To debug: System.err.println("Debug messages...");
@@ -66,6 +74,19 @@ class Player {
             }
         }
         return human;
+    }
+
+    private static Human[] HumansInDanger(Human[] humans, Zombie[] zombies) {
+        List<Human> humansInDanger = new ArrayList<>();
+        for (Human h : humans) {
+            for (Zombie z : zombies) {
+                if (distance(h, z) <= 1200) {
+                    humansInDanger.add(h);
+                    break;
+                }
+            }
+        }
+        return humansInDanger.toArray(new Human[humansInDanger.size()]);
     }
 }
 
