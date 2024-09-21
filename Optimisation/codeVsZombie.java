@@ -1,3 +1,5 @@
+// Score: 35390
+
 import java.util.*;
 import java.io.*;
 import java.math.*;
